@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏆 Galardones · Colombianazo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --col-yellow: #FCD116;
+    --col-blue: #003087;
+    --col-red: #CE1126;
+    --col-dark: #0a0a1e;
+    --col-card: #16213e;
+    --col-accent: #0f3460;
+    --col-text: #e6e6e6;
+    --col-muted: #8a8aa0;
+    --col-green: #2ecc71;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--col-dark);
+    color: var(--col-text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  input, select { font-family: inherit; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,10,30,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--col-yellow);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .topbar h1 {
+    font-size: 16px; font-weight: 900; letter-spacing: 0.5px;
+    color: var(--col-yellow);
+    flex: 1; min-width: 0;
+  }
+  .topbar h1 .yr { color: var(--col-text); font-weight: 600; }
+  .me-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--col-accent);
+    border: 1px solid var(--col-blue);
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 13px; font-weight: 700;
+  }
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--col-red);
+    color: var(--col-red);
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+  }
+  .logout-btn:hover { background: var(--col-red); color: white; }
+
+  .progress-bar {
+    background: var(--col-card);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--col-accent);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: var(--col-muted);
+  }
+  .progress-bar strong { color: var(--col-yellow); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+
+  .galardones-grid {
+    display: grid; grid-template-columns: 1fr; gap: 16px;
+  }
+  @media (min-width: 760px) {
+    .galardones-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .award {
+    background: var(--col-card);
+    border: 1px solid var(--col-accent);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .award-head { display: flex; align-items: flex-start; gap: 10px; }
+  .award-emoji { font-size: 32px; line-height: 1; }
+  .award-title h3 { font-size: 16px; font-weight: 900; color: var(--col-yellow); }
+  .award-title p { font-size: 12px; color: var(--col-muted); margin-top: 2px; line-height: 1.35; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--col-dark);
+    border: 1px solid var(--col-accent);
+    color: var(--col-text);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+    transition: all .15s;
+  }
+  .chip:hover { border-color: var(--col-yellow); }
+  .chip.selected {
+    background: var(--col-yellow);
+    color: var(--col-dark);
+    border-color: var(--col-yellow);
+  }
+  .chip .e { font-size: 13px; }
+
+  .tally { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+  .tally-row { display: grid; grid-template-columns: 80px 1fr 24px; align-items: center; gap: 8px; font-size: 11px; }
+  .tally-name { color: var(--col-muted); font-weight: 600; }
+  .tally-name.is-leader { color: var(--col-yellow); }
+  .tally-track { background: var(--col-dark); border-radius: 4px; height: 8px; overflow: hidden; }
+  .tally-fill { height: 100%; background: var(--col-blue); transition: width .35s; }
+  .tally-fill.is-leader { background: var(--col-yellow); }
+  .tally-count { text-align: right; color: var(--col-muted); font-variant-numeric: tabular-nums; }
+
+  .winner-banner {
+    background: linear-gradient(135deg, var(--col-yellow), #ffe066);
+    color: var(--col-dark);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .overlay {
+    position: fixed; inset: 0;
+    background: var(--col-dark);
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px; z-index: 100;
+  }
+  .login-card {
+    background: var(--col-card);
+    border: 2px solid var(--col-yellow);
+    border-radius: 18px;
+    padding: 28px 22px;
+    width: 100%; max-width: 360px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .login-card h2 { font-size: 22px; font-weight: 900; color: var(--col-yellow); text-align: center; }
+  .login-card .sub { font-size: 13px; color: var(--col-muted); text-align: center; margin-top: -6px; }
+  .login-card label {
+    display: flex; flex-direction: column; gap: 6px;
+    font-size: 11px; font-weight: 700; color: var(--col-muted); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .login-card select, .login-card input {
+    background: var(--col-dark);
+    border: 1px solid var(--col-accent);
+    color: var(--col-text);
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+  }
+  .login-card select:focus, .login-card input:focus { border-color: var(--col-yellow); }
+  .login-card .submit {
+    background: var(--col-yellow);
+    color: var(--col-dark);
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px; font-weight: 900;
+    margin-top: 4px;
+  }
+  .login-card .submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .login-error { color: var(--col-red); font-size: 12px; font-weight: 700; text-align: center; min-height: 16px; }
+
+  .hide { display: none !important; }
+  footer { text-align: center; color: var(--col-muted); font-size: 11px; padding: 24px 16px; }
+</style>
+</head>
+<body>
+
+<div id="overlay" class="overlay">
+  <form id="login-form" class="login-card" autocomplete="off">
+    <h2>🏆 Galardones</h2>
+    <div class="sub">Colombianazo 2026 · Identificate para votar</div>
+    <label>
+      Tu nombre
+      <select id="login-name" required>
+        <option value="" disabled selected>Elegí tu nombre</option>
+      </select>
+    </label>
+    <label>
+      PIN (4 dígitos)
+      <input id="login-pin" type="password" inputmode="numeric" pattern="\d{4}" maxlength="4" required>
+    </label>
+    <button class="submit" type="submit">Entrar</button>
+    <div id="login-error" class="login-error"></div>
+  </form>
+</div>
+
+<header id="topbar" class="topbar hide">
+  <h1>🏆 Galardones <span class="yr">· Colombianazo 2026</span></h1>
+  <div class="me-pill" id="me-pill"></div>
+  <button class="logout-btn" id="logout">Salir</button>
+</header>
+
+<div id="progress" class="progress-bar hide">
+  <span><strong id="prg-count">0</strong> de <strong id="prg-total">10</strong> ya votaron</span>
+</div>
+
+<main id="main" class="hide">
+  <div id="galardones-grid" class="galardones-grid"></div>
+  <footer>Tu voto se guarda automáticamente. Podés cambiarlo cuando quieras.</footer>
+</main>
+
+<script>
+const INTEGRANTES = ["Fauno","Casty","Chapa","Duty","Franky","Gordo","Juani","Nono","Oso","Colo"];
+const EMOJIS_INT  = ["🤠","🎸","🕶️","💪","📸","🌎","✈️","🎯","🐻","⭐"];
+const EMOJI_BY_NAME = Object.fromEntries(INTEGRANTES.map((n,i)=>[n, EMOJIS_INT[i]]));
+
+const GALARDONES = [
+  { id:'mvp',         emoji:'🏅', nombre:'MVP',             desc:'Most Valuable Player — el más imprescindible del viaje' },
+  { id:'colaborador', emoji:'🤝', nombre:'Más Colaborador', desc:'El que más participa, ayuda y contribuye al bienestar general' },
+  { id:'revelacion',  emoji:'💡', nombre:'Revelación',      desc:'Quien dio a conocer una faceta desconocida para BIEN' },
+  { id:'borrachin',   emoji:'🍺', nombre:'Borrachín',       desc:'Quien considerás que puede perder el control por el exceso de alcohol' },
+  { id:'boyscout',    emoji:'⛺', nombre:'Boy Scout',       desc:'Firme al pie del cañón para acompañar en todo evento' },
+  { id:'uruguayo',    emoji:'🪴', nombre:'Uruguayo',        desc:'No ayuda un carajo en los quehaceres domésticos' },
+  { id:'goat',        emoji:'🐐', nombre:'GOAT Colombiano', desc:'The Greatest Of All Time — edición Colombia 2026' },
+  { id:'curry',       emoji:'🏀', nombre:'Stephen Curry',   desc:'Al mejor triple — precisión y range al máximo' },
+];
+
+const $ = (id) => document.getElementById(id);
+
+function api(method, path, body) {
+  return fetch(path, {
+    method,
+    credentials: 'same-origin',
+    headers: body ? {'Content-Type':'application/json'} : {},
+    body: body ? JSON.stringify(body) : undefined,
+  }).then(async r => {
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error(data.error || `HTTP ${r.status}`), { status: r.status });
+    return data;
+  });
+}
+
+function fillNameSelect() {
+  const sel = $('login-name');
+  for (const n of INTEGRANTES) {
+    const opt = document.createElement('option');
+    opt.value = n;
+    opt.textContent = `${EMOJI_BY_NAME[n]} ${n}`;
+    sel.appendChild(opt);
+  }
+}
+
+async function bootstrap() {
+  fillNameSelect();
+  try {
+    const s = await api('GET', '/api/state');
+    showApp(s);
+  } catch (e) {
+    showLogin();
+  }
+}
+
+function showLogin() {
+  $('overlay').classList.remove('hide');
+  $('topbar').classList.add('hide');
+  $('progress').classList.add('hide');
+  $('main').classList.add('hide');
+  setTimeout(() => $('login-name').focus(), 50);
+}
+
+function showApp(state) {
+  $('overlay').classList.add('hide');
+  $('topbar').classList.remove('hide');
+  $('progress').classList.remove('hide');
+  $('main').classList.remove('hide');
+  $('me-pill').textContent = `${EMOJI_BY_NAME[state.me] || ''} ${state.me}`;
+  render(state);
+}
+
+function render(state) {
+  $('prg-count').textContent = state.totalVoters;
+  $('prg-total').textContent = state.expectedVoters;
+
+  const grid = $('galardones-grid');
+  grid.innerHTML = '';
+  for (const g of GALARDONES) {
+    const tally = state.tallies[g.id] || {};
+    const myVote = state.myVotes[g.id] || null;
+    const totalForAward = Object.values(tally).reduce((a,b) => a+b, 0);
+    const max = Math.max(0, ...Object.values(tally));
+    const leaders = Object.entries(tally).filter(([,c]) => c === max && c > 0).map(([n]) => n);
+    const hasClearLeader = leaders.length === 1 && max >= 2;
+
+    const card = document.createElement('section');
+    card.className = 'award';
+    card.innerHTML = `
+      <div class="award-head">
+        <div class="award-emoji">${g.emoji}</div>
+        <div class="award-title">
+          <h3>${g.nombre}</h3>
+          <p>${g.desc}</p>
+        </div>
+      </div>
+      <div class="chips">
+        ${INTEGRANTES.map(n => `
+          <button class="chip ${myVote === n ? 'selected' : ''}" data-name="${n}">
+            <span class="e">${EMOJI_BY_NAME[n]}</span>${n}
+          </button>
+        `).join('')}
+      </div>
+      <div class="tally">
+        ${INTEGRANTES.map(n => {
+          const c = tally[n] || 0;
+          const pct = state.expectedVoters ? (c / state.expectedVoters) * 100 : 0;
+          const isLeader = hasClearLeader && leaders[0] === n;
+          return `
+            <div class="tally-row">
+              <span class="tally-name ${isLeader?'is-leader':''}">${n}</span>
+              <div class="tally-track"><div class="tally-fill ${isLeader?'is-leader':''}" style="width:${pct}%"></div></div>
+              <span class="tally-count">${c}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      ${hasClearLeader && state.totalVoters >= state.expectedVoters
+        ? `<div class="winner-banner">🏆 Ganador: ${EMOJI_BY_NAME[leaders[0]]} ${leaders[0]}</div>`
+        : ''}
+    `;
+    card.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const target = btn.dataset.name;
+        const newTarget = (myVote === target) ? null : target;
+        try {
+          card.querySelectorAll('.chip').forEach(b => b.disabled = true);
+          const fresh = await api('POST', '/api/vote', { award: g.id, target: newTarget });
+          render(fresh);
+        } catch (e) {
+          if (e.status === 401) { showLogin(); return; }
+          alert('No se pudo guardar el voto: ' + e.message);
+          card.querySelectorAll('.chip').forEach(b => b.disabled = false);
+        }
+      });
+    });
+    grid.appendChild(card);
+  }
+}
+
+$('login-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const name = $('login-name').value;
+  const pin  = $('login-pin').value;
+  const err  = $('login-error');
+  err.textContent = '';
+  if (!INTEGRANTES.includes(name)) { err.textContent = 'Elegí un nombre.'; return; }
+  if (!/^\d{4}$/.test(pin)) { err.textContent = 'PIN inválido (4 dígitos).'; return; }
+  try {
+    const state = await api('POST', '/api/login', { name, pin });
+    $('login-pin').value = '';
+    showApp(state);
+  } catch (e) {
+    err.textContent = e.message === 'pin incorrecto' ? 'PIN incorrecto.' : 'Error: ' + e.message;
+  }
+});
+
+$('logout').addEventListener('click', async () => {
+  try { await api('POST', '/api/logout'); } catch {}
+  showLogin();
+});
+
+bootstrap();
+</script>
+</body>
+</html>
