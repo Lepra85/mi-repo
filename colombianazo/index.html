@@ -3,1238 +3,372 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LPD Colombianazo 2026 🇨🇴</title>
+<title>🏆 Galardones · Colombianazo 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --col-yellow: #FCD116;
     --col-blue: #003087;
     --col-red: #CE1126;
-    --col-dark: #1a1a2e;
+    --col-dark: #0a0a1e;
     --col-card: #16213e;
     --col-accent: #0f3460;
-    --col-text: #e0e0e0;
-    --col-muted: #888;
+    --col-text: #e6e6e6;
+    --col-muted: #8a8aa0;
     --col-green: #2ecc71;
-    --col-orange: #f39c12;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     font-family: 'Montserrat', sans-serif;
     background: var(--col-dark);
     color: var(--col-text);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
+  button { font-family: inherit; cursor: pointer; }
+  input, select { font-family: inherit; }
 
-  /* NAV */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
     background: rgba(10,10,30,0.95);
     backdrop-filter: blur(10px);
     border-bottom: 2px solid var(--col-yellow);
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   }
-  .nav::-webkit-scrollbar { display: none; }
-  .nav-btn {
-    flex: 0 0 auto;
-    padding: 12px 18px;
-    background: none;
-    border: none;
-    color: var(--col-muted);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-    border-bottom: 3px solid transparent;
+  .topbar h1 {
+    font-size: 16px; font-weight: 900; letter-spacing: 0.5px;
+    color: var(--col-yellow);
+    flex: 1; min-width: 0;
   }
-  .nav-btn:hover { color: var(--col-yellow); }
-  .nav-btn.active { color: var(--col-yellow); border-bottom-color: var(--col-yellow); }
+  .topbar h1 .yr { color: var(--col-text); font-weight: 600; }
+  .me-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--col-accent);
+    border: 1px solid var(--col-blue);
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 13px; font-weight: 700;
+  }
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--col-red);
+    color: var(--col-red);
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+  }
+  .logout-btn:hover { background: var(--col-red); color: white; }
 
-  /* SECTIONS */
-  html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-  .section {
-    display: block;
-    min-height: 100vh;
-    padding: 24px 16px 60px;
-    max-width: 900px;
-    margin: 0 auto;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+  .progress-bar {
+    background: var(--col-card);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--col-accent);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: var(--col-muted);
   }
-  .section-hidden { display: none !important; }
-  /* HERO */
-  #s-hero {
-    max-width: 100%;
-    padding: 0;
-    background: linear-gradient(135deg, var(--col-blue) 0%, #00174a 40%, #1a0008 100%);
-    min-height: calc(100vh - 50px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  .progress-bar strong { color: var(--col-yellow); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+
+  .galardones-grid {
+    display: grid; grid-template-columns: 1fr; gap: 16px;
   }
-  .hero-flags {
-    font-size: 60px;
-    margin-bottom: 8px;
-    animation: float 3s ease-in-out infinite;
+  @media (min-width: 760px) {
+    .galardones-grid { grid-template-columns: 1fr 1fr; }
   }
-  @keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+  .award {
+    background: var(--col-card);
+    border: 1px solid var(--col-accent);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
   }
-  .hero-title {
-    font-family: 'Dancing Script', cursive;
-    font-size: clamp(42px, 10vw, 80px);
-    font-weight: 700;
-    color: var(--col-yellow);
-    text-shadow: 0 0 30px rgba(252,209,22,0.5);
-    line-height: 1.1;
-    margin-bottom: 4px;
+  .award-head { display: flex; align-items: flex-start; gap: 10px; }
+  .award-emoji { font-size: 32px; line-height: 1; }
+  .award-title h3 { font-size: 16px; font-weight: 900; color: var(--col-yellow); }
+  .award-title p { font-size: 12px; color: var(--col-muted); margin-top: 2px; line-height: 1.35; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--col-dark);
+    border: 1px solid var(--col-accent);
+    color: var(--col-text);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+    transition: all .15s;
   }
-  .hero-sub {
-    font-size: 18px;
-    color: #fff;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    opacity: 0.9;
+  .chip:hover { border-color: var(--col-yellow); }
+  .chip.selected {
+    background: var(--col-yellow);
+    color: var(--col-dark);
+    border-color: var(--col-yellow);
   }
-  .hero-dates {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(252,209,22,0.4);
-    border-radius: 50px;
-    padding: 8px 24px;
-    font-size: 14px;
-    color: var(--col-yellow);
-    font-weight: 600;
-    margin-bottom: 32px;
-  }
-  .countdown-grid {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 32px;
-  }
-  .countdown-item {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(252,209,22,0.3);
-    border-radius: 12px;
-    padding: 16px 20px;
-    min-width: 80px;
+  .chip .e { font-size: 13px; }
+
+  .tally { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+  .tally-row { display: grid; grid-template-columns: 80px 1fr 24px; align-items: center; gap: 8px; font-size: 11px; }
+  .tally-name { color: var(--col-muted); font-weight: 600; }
+  .tally-name.is-leader { color: var(--col-yellow); }
+  .tally-track { background: var(--col-dark); border-radius: 4px; height: 8px; overflow: hidden; }
+  .tally-fill { height: 100%; background: var(--col-blue); transition: width .35s; }
+  .tally-fill.is-leader { background: var(--col-yellow); }
+  .tally-count { text-align: right; color: var(--col-muted); font-variant-numeric: tabular-nums; }
+
+  .winner-banner {
+    background: linear-gradient(135deg, var(--col-yellow), #ffe066);
+    color: var(--col-dark);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
     text-align: center;
   }
-  .countdown-num {
-    font-size: 36px;
-    font-weight: 900;
-    color: var(--col-yellow);
-    line-height: 1;
+
+  .overlay {
+    position: fixed; inset: 0;
+    background: var(--col-dark);
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px; z-index: 100;
   }
-  .countdown-lbl {
-    font-size: 10px;
-    color: var(--col-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  .login-card {
+    background: var(--col-card);
+    border: 2px solid var(--col-yellow);
+    border-radius: 18px;
+    padding: 28px 22px;
+    width: 100%; max-width: 360px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .login-card h2 { font-size: 22px; font-weight: 900; color: var(--col-yellow); text-align: center; }
+  .login-card .sub { font-size: 13px; color: var(--col-muted); text-align: center; margin-top: -6px; }
+  .login-card label {
+    display: flex; flex-direction: column; gap: 6px;
+    font-size: 11px; font-weight: 700; color: var(--col-muted); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .login-card select, .login-card input {
+    background: var(--col-dark);
+    border: 1px solid var(--col-accent);
+    color: var(--col-text);
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+  }
+  .login-card select:focus, .login-card input:focus { border-color: var(--col-yellow); }
+  .login-card .submit {
+    background: var(--col-yellow);
+    color: var(--col-dark);
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px; font-weight: 900;
     margin-top: 4px;
   }
-  .integrantes-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    max-width: 600px;
-    padding: 0 16px;
-  }
-  .integrante-chip {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #fff;
-  }
-  .status-bar {
-    margin-top: 32px;
-    padding: 0 16px;
-    width: 100%;
-    max-width: 500px;
-  }
-  .status-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--col-muted);
-    margin-bottom: 6px;
-  }
-  .status-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    height: 8px;
-    overflow: hidden;
-  }
-  .status-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--col-yellow), var(--col-red));
-    border-radius: 10px;
-    transition: width 0.5s ease;
-  }
+  .login-card .submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .login-error { color: var(--col-red); font-size: 12px; font-weight: 700; text-align: center; min-height: 16px; }
 
-  /* CARDS */
-  .card {
-    background: var(--col-card);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-  .card-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--col-yellow);
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .section-title {
-    font-size: 26px;
-    font-weight: 900;
-    color: #fff;
-    margin-bottom: 6px;
-  }
-  .section-sub {
-    font-size: 13px;
-    color: var(--col-muted);
-    margin-bottom: 24px;
-  }
-
-  /* GLOBE */
-  .globe-wrap { position: relative; margin-bottom: 16px; }
-  #map { height: 500px; border-radius: 16px; overflow: hidden; background: #000; }
-  .globe-btn {
-    position: absolute;
-    bottom: 14px;
-    right: 14px;
-    background: rgba(10,10,30,0.85);
-    border: 1px solid rgba(252,209,22,0.4);
-    color: var(--col-yellow);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 7px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    backdrop-filter: blur(6px);
-    transition: all 0.2s;
-    z-index: 10;
-    letter-spacing: 0.5px;
-  }
-  .globe-btn:hover { background: rgba(252,209,22,0.15); }
-  .city-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
-  .city-card {
-    background: var(--col-card);
-    border-radius: 12px;
-    padding: 16px;
-    border-left: 4px solid var(--col-yellow);
-  }
-  .city-card.ctg { border-left-color: var(--col-red); }
-  .city-card.smr { border-left-color: var(--col-blue); }
-  .city-name { font-size: 18px; font-weight: 700; color: #fff; }
-  .city-dates { font-size: 12px; color: var(--col-muted); margin-top: 4px; }
-  .city-emoji { font-size: 28px; margin-bottom: 8px; }
-
-  /* TIMELINE */
-  .timeline { position: relative; padding-left: 40px; }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 14px;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(to bottom, var(--col-yellow), var(--col-red), var(--col-blue));
-    border-radius: 3px;
-  }
-  .tl-item {
-    position: relative;
-    margin-bottom: 20px;
-    padding: 16px;
-    background: var(--col-card);
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.06);
-    transition: all 0.2s;
-  }
-  .tl-item.today {
-    border-color: var(--col-yellow);
-    box-shadow: 0 0 20px rgba(252,209,22,0.2);
-  }
-  .tl-item.past { opacity: 0.5; }
-  .tl-dot {
-    position: absolute;
-    left: -33px;
-    top: 20px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--col-dark);
-    border: 3px solid var(--col-yellow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 8px;
-  }
-  .tl-item.past .tl-dot { border-color: var(--col-green); background: var(--col-green); }
-  .tl-item.today .tl-dot { border-color: var(--col-yellow); background: var(--col-yellow); animation: pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 0 0 0 rgba(252,209,22,0.4); }
-    50% { box-shadow: 0 0 0 8px rgba(252,209,22,0); }
-  }
-  .tl-date { font-size: 11px; color: var(--col-yellow); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-  .tl-city { font-size: 15px; font-weight: 700; color: #fff; }
-  .tl-events { font-size: 12px; color: var(--col-muted); margin-top: 6px; line-height: 1.6; }
-  .tl-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 700;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-  .badge-ctg { background: rgba(206,17,38,0.2); color: var(--col-red); }
-  .badge-smr { background: rgba(0,48,135,0.3); color: #6ca0ff; }
-  .badge-bog { background: rgba(252,209,22,0.15); color: var(--col-yellow); }
-
-  /* CLIMA TIMELINE */
-  .clima-loading { color: var(--col-muted); font-size: 13px; text-align: center; padding: 20px; }
-  .clima-tl-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
-  .clima-tl-outer::-webkit-scrollbar { height: 4px; }
-  .clima-tl-outer::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
-  .clima-tl-outer::-webkit-scrollbar-thumb { background: rgba(252,209,22,0.3); border-radius: 2px; }
-  .clima-tl { display: table; border-collapse: separate; border-spacing: 4px; min-width: 100%; }
-  .clima-tl-row { display: table-row; }
-  .clima-tl-label {
-    display: table-cell;
-    vertical-align: middle;
-    white-space: nowrap;
-    padding: 6px 12px 6px 0;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    min-width: 90px;
-  }
-  .clima-tl-head-cell {
-    display: table-cell;
-    text-align: center;
-    padding: 4px 2px 8px;
-    font-size: 9px;
-    color: var(--col-muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    min-width: 56px;
-    vertical-align: bottom;
-  }
-  .clima-tl-head-cell.today-col { color: var(--col-yellow); }
-  .clima-tl-cell {
-    display: table-cell;
-    text-align: center;
-    padding: 8px 4px;
-    border-radius: 10px;
-    min-width: 56px;
-    vertical-align: middle;
-    position: relative;
-  }
-  .clima-tl-cell.active {
-    background: var(--col-card);
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  .clima-tl-cell.inactive { opacity: 0.12; }
-  .clima-tl-cell.today-col { outline: 1px solid rgba(252,209,22,0.4); border-radius: 10px; }
-  .ct-icon { font-size: 20px; line-height: 1; }
-  .ct-max { font-size: 13px; font-weight: 700; color: #fff; margin-top: 4px; }
-  .ct-min { font-size: 10px; color: var(--col-muted); }
-  .ct-loading { font-size: 16px; }
-  .clima-legend { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
-  .clima-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--col-muted); }
-  .clima-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 10px; }
-
-  /* GASTOS */
-  .gasto-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
-  .gasto-total { font-size: 28px; font-weight: 900; color: var(--col-yellow); }
-  .gasto-total-lbl { font-size: 11px; color: var(--col-muted); }
-  .gasto-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-  .gasto-item {
-    background: rgba(255,255,255,0.04);
-    border-radius: 10px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .gasto-icon { font-size: 22px; flex: 0 0 auto; }
-  .gasto-info { flex: 1; min-width: 0; }
-  .gasto-nombre { font-size: 13px; font-weight: 600; color: #fff; }
-  .gasto-quien { font-size: 11px; color: var(--col-muted); margin-top: 2px; }
-  .gasto-fecha { font-size: 10px; color: var(--col-muted); }
-  .gasto-monto { text-align: right; flex: 0 0 auto; }
-  .gasto-cop { font-size: 14px; font-weight: 700; color: var(--col-red); }
-  .gasto-ars { font-size: 11px; color: var(--col-muted); }
-  .deudas-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; }
-  .deuda-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .deuda-nombre { font-size: 13px; color: #fff; min-width: 120px; }
-  .deuda-bar-wrap { flex: 1; background: rgba(255,255,255,0.08); border-radius: 10px; height: 8px; overflow: hidden; }
-  .deuda-bar { height: 100%; background: var(--col-red); border-radius: 10px; }
-  .deuda-monto { font-size: 12px; color: var(--col-red); font-weight: 700; min-width: 110px; text-align: right; }
-
-  /* VUELOS */
-  .vuelo-item {
-    background: var(--col-card);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 12px;
-    border: 1px solid rgba(255,255,255,0.06);
-    flex-wrap: wrap;
-  }
-  .vuelo-route { flex: 1; }
-  .vuelo-cities { font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
-  .vuelo-arrow { color: var(--col-yellow); }
-  .vuelo-info { font-size: 12px; color: var(--col-muted); margin-top: 4px; }
-  .vuelo-link {
-    background: var(--col-yellow);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: opacity 0.2s;
-  }
-  .vuelo-link:hover { opacity: 0.8; }
-
-  /* EQUIPAJE */
-  .equip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
-  .equip-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--col-card);
-    border-radius: 10px;
-    padding: 12px 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .equip-item:hover { border-color: rgba(255,255,255,0.15); }
-  .equip-item.done { background: rgba(46,204,113,0.1); border-color: rgba(46,204,113,0.3); }
-  .equip-check {
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    border: 2px solid rgba(255,255,255,0.2);
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    transition: all 0.2s;
-  }
-  .equip-item.done .equip-check { background: var(--col-green); border-color: var(--col-green); }
-  .equip-name { font-size: 13px; font-weight: 600; color: #fff; }
-  .equip-item.done .equip-name { text-decoration: line-through; opacity: 0.6; }
-  .equip-owner { font-size: 10px; color: var(--col-muted); margin-top: 2px; }
-
-  /* GALARDONES */
-  .award-card {
-    background: var(--col-card);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .award-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-  .award-emoji { font-size: 32px; }
-  .award-name { font-size: 18px; font-weight: 700; color: #fff; }
-  .award-desc { font-size: 12px; color: var(--col-muted); margin-top: 2px; }
-  .award-voters { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
-  .voter-btn {
-    background: rgba(255,255,255,0.04);
-    border: 2px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 10px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    font-family: 'Montserrat', sans-serif;
-  }
-  .voter-btn:hover { border-color: rgba(252,209,22,0.4); background: rgba(252,209,22,0.05); }
-  .voter-btn.selected { border-color: var(--col-yellow); background: rgba(252,209,22,0.1); }
-  .voter-btn.winner { border-color: var(--col-green) !important; background: rgba(46,204,113,0.1) !important; }
-  .voter-name { font-size: 13px; font-weight: 600; color: #fff; }
-  .voter-bar-wrap { background: rgba(255,255,255,0.08); border-radius: 6px; height: 4px; margin-top: 8px; overflow: hidden; }
-  .voter-bar { height: 100%; background: var(--col-yellow); border-radius: 6px; transition: width 0.3s; }
-  .voter-count { font-size: 10px; color: var(--col-muted); margin-top: 4px; }
-  .award-winner-banner {
-    background: rgba(46,204,113,0.1);
-    border: 1px solid rgba(46,204,113,0.3);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 12px;
-    color: var(--col-green);
-    font-weight: 600;
-    margin-top: 12px;
-    display: none;
-  }
-
-  /* NOTA */
-  .nota-box {
-    background: rgba(243,156,18,0.1);
-    border: 1px solid rgba(243,156,18,0.3);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: var(--col-orange);
-    margin-bottom: 20px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  /* UTILS */
-  .tag {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 10px;
-    font-weight: 700;
-    background: rgba(252,209,22,0.15);
-    color: var(--col-yellow);
-    margin-right: 4px;
-  }
-
-  @media (max-width: 600px) {
-    .countdown-grid { gap: 10px; }
-    .countdown-item { padding: 12px 14px; min-width: 68px; }
-    .countdown-num { font-size: 28px; }
-    .section { padding: 16px 12px; }
-  }
+  .hide { display: none !important; }
+  footer { text-align: center; color: var(--col-muted); font-size: 11px; padding: 24px 16px; }
 </style>
 </head>
 <body>
 
-<nav class="nav" id="nav">
-  <button class="nav-btn active" onclick="showSection('hero')">🇨🇴 Inicio</button>
-  <button class="nav-btn" onclick="showSection('mapa')">🗺️ Mapa</button>
-  <button class="nav-btn" onclick="showSection('timeline')">📅 Timeline</button>
-  <button class="nav-btn" onclick="showSection('clima')">🌤️ Clima</button>
-  <!-- <button class="nav-btn" onclick="showSection('gastos')">💸 Gastos</button> -->
-  <button class="nav-btn" onclick="showSection('vuelos')">✈️ Vuelos</button>
-  <button class="nav-btn" onclick="showSection('equipaje')">🎒 Equipaje</button>
-  <button class="nav-btn" onclick="showSection('galardones')">🏆 Galardones</button>
-</nav>
+<div id="overlay" class="overlay">
+  <form id="login-form" class="login-card" autocomplete="off">
+    <h2>🏆 Galardones</h2>
+    <div class="sub">Colombianazo 2026 · Identificate para votar</div>
+    <label>
+      Tu nombre
+      <select id="login-name" required>
+        <option value="" disabled selected>Elegí tu nombre</option>
+      </select>
+    </label>
+    <label>
+      PIN (4 dígitos)
+      <input id="login-pin" type="password" inputmode="numeric" pattern="\d{4}" maxlength="4" required>
+    </label>
+    <button class="submit" type="submit">Entrar</button>
+    <div id="login-error" class="login-error"></div>
+  </form>
+</div>
 
-<!-- HERO -->
-<section class="section active" id="s-hero">
-  <div class="hero-flags">🇨🇴🌴🇨🇴</div>
-  <div class="hero-title">LPD Colombianazo</div>
-  <div class="hero-title" style="font-size:clamp(20px,5vw,36px); color:#fff; font-family:'Montserrat',sans-serif; font-weight:900; margin-top:4px;">40 años no son nada</div>
-  <div class="hero-sub">2026</div>
-  <div class="hero-dates">📅 29 de abril — 10 de mayo · 10 personas · 12 días</div>
+<header id="topbar" class="topbar hide">
+  <h1>🏆 Galardones <span class="yr">· Colombianazo 2026</span></h1>
+  <div class="me-pill" id="me-pill"></div>
+  <button class="logout-btn" id="logout">Salir</button>
+</header>
 
-  <div class="countdown-grid" id="countdown">
-    <div class="countdown-item"><div class="countdown-num" id="cd-d">0</div><div class="countdown-lbl">días</div></div>
-    <div class="countdown-item"><div class="countdown-num" id="cd-h">0</div><div class="countdown-lbl">horas</div></div>
-    <div class="countdown-item"><div class="countdown-num" id="cd-m">0</div><div class="countdown-lbl">min</div></div>
-    <div class="countdown-item"><div class="countdown-num" id="cd-s">0</div><div class="countdown-lbl">seg</div></div>
-  </div>
+<div id="progress" class="progress-bar hide">
+  <span><strong id="prg-count">0</strong> de <strong id="prg-total">10</strong> ya votaron</span>
+</div>
 
-  <div class="integrantes-grid">
-    <div class="integrante-chip">🤠 Fauno</div>
-    <div class="integrante-chip">🎸 Casty</div>
-    <div class="integrante-chip">🕶️ Chapa</div>
-    <div class="integrante-chip">💪 Duty</div>
-    <div class="integrante-chip">📸 Franky</div>
-    <div class="integrante-chip">🌎 Gordo</div>
-    <div class="integrante-chip">✈️ Juani</div>
-    <div class="integrante-chip">🎯 Nono</div>
-    <div class="integrante-chip">🐻 Oso</div>
-    <div class="integrante-chip">⭐ Colo</div>
-  </div>
+<main id="main" class="hide">
+  <div id="galardones-grid" class="galardones-grid"></div>
+  <footer>Tu voto se guarda automáticamente. Podés cambiarlo cuando quieras.</footer>
+</main>
 
-</section>
-
-<!-- MAPA -->
-<section class="section" id="s-mapa">
-  <div class="section-title">🗺️ Ruta del Colombianazo</div>
-  <div class="section-sub">Bogotá → Cartagena → Santa Marta</div>
-  <div class="globe-wrap">
-    <div id="map"></div>
-    <button class="globe-btn" id="globe-rotate-btn" onclick="toggleGlobeRotate()">⏸ Pausar rotación</button>
-  </div>
-  <div class="city-cards">
-    <div class="city-card bog">
-      <div class="city-emoji">🏙️</div>
-      <div class="city-name">Bogotá</div>
-      <div class="city-dates">30 abr · Soft Landing · Attic & Keller</div>
-    </div>
-    <div class="city-card ctg">
-      <div class="city-emoji">🏛️</div>
-      <div class="city-name">Cartagena</div>
-      <div class="city-dates">1 may — 3 may · Ciudad Amurallada · Islas del Rosario · Fénix</div>
-    </div>
-    <div class="city-card smr">
-      <div class="city-emoji">🌊</div>
-      <div class="city-name">Playa Dormida · Santa Marta</div>
-      <div class="city-dates">4 may — 7 may · Tayrona · Buceo · Playas</div>
-    </div>
-    <div class="city-card bog" style="border-left-color:#f39c12">
-      <div class="city-emoji">🥩</div>
-      <div class="city-name">Bogotá + Suesca</div>
-      <div class="city-dates">8 may — 9 may · Asado despedida · Vuelta el 10</div>
-    </div>
-  </div>
-</section>
-
-<!-- TIMELINE -->
-<section class="section" id="s-timeline">
-  <div class="section-title">📅 Timeline del Viaje</div>
-  <div class="section-sub">11 días de colombianazo puro</div>
-  <div class="timeline" id="timeline-container"></div>
-</section>
-
-<!-- CLIMA -->
-<section class="section" id="s-clima">
-  <div class="section-title">🌤️ Clima del Viaje</div>
-  <div class="section-sub">Pronóstico por ciudad · 29 abr — 10 may</div>
-  <div class="card">
-    <div id="clima-tl-wrap"><div class="clima-loading">⏳ Cargando pronóstico...</div></div>
-  </div>
-</section>
-
-<!-- GASTOS (oculto) -->
-<section class="section section-hidden" id="s-gastos">
-  <div class="section-title">💸 Gastos del Grupo</div>
-  <div class="section-sub">Datos de Splitwise · Agustin organiza los pagos</div>
-
-  <div class="card">
-    <div class="gasto-header">
-      <div>
-        <div class="gasto-total-lbl">Total registrado hasta hoy</div>
-        <div class="gasto-total">COP 13.760.109</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:11px;color:var(--col-muted)">Tu deuda con Agustin</div>
-        <div style="font-size:22px;font-weight:900;color:var(--col-red)">COP 1.318.632</div>
-      </div>
-    </div>
-
-    <div class="gasto-list">
-      <div class="gasto-item">
-        <div class="gasto-icon">🏠</div>
-        <div class="gasto-info">
-          <div class="gasto-nombre">Departamento Cartagena</div>
-          <div class="gasto-quien">Pagó: Agustin</div>
-          <div class="gasto-fecha">19 abril 2026</div>
-        </div>
-        <div class="gasto-monto">
-          <div class="gasto-cop">COP 5.593.000</div>
-          <div class="gasto-ars">÷ 10 personas</div>
-        </div>
-      </div>
-      <div class="gasto-item">
-        <div class="gasto-icon">🏠</div>
-        <div class="gasto-info">
-          <div class="gasto-nombre">Departamento Santa Marta</div>
-          <div class="gasto-quien">Pagó: Agustin</div>
-          <div class="gasto-fecha">19 abril 2026</div>
-        </div>
-        <div class="gasto-monto">
-          <div class="gasto-cop">COP 3.189.000</div>
-          <div class="gasto-ars">÷ 10 personas</div>
-        </div>
-      </div>
-      <div class="gasto-item">
-        <div class="gasto-icon">⛵</div>
-        <div class="gasto-info">
-          <div class="gasto-nombre">Barco Santa Marta</div>
-          <div class="gasto-quien">Pagó: Agustin</div>
-          <div class="gasto-fecha">14 abril 2026</div>
-        </div>
-        <div class="gasto-monto">
-          <div class="gasto-cop">COP 1.550.000</div>
-          <div class="gasto-ars">÷ 10 personas</div>
-        </div>
-      </div>
-      <div class="gasto-item">
-        <div class="gasto-icon">⛵</div>
-        <div class="gasto-info">
-          <div class="gasto-nombre">Barco Cartagena</div>
-          <div class="gasto-quien">Pagó: Agustin</div>
-          <div class="gasto-fecha">14 abril 2026</div>
-        </div>
-        <div class="gasto-monto">
-          <div class="gasto-cop">COP 1.404.444</div>
-          <div class="gasto-ars">÷ 9 personas</div>
-        </div>
-      </div>
-      <div class="gasto-item">
-        <div class="gasto-icon">🚐</div>
-        <div class="gasto-info">
-          <div class="gasto-nombre">Van CTG → SMR</div>
-          <div class="gasto-quien">Pagó: Agustin</div>
-          <div class="gasto-fecha">14 abril 2026</div>
-        </div>
-        <div class="gasto-monto">
-          <div class="gasto-cop">COP 600.000</div>
-          <div class="gasto-ars">÷ 9 personas</div>
-        </div>
-      </div>
-      <div class="gasto-item">
-        <div class="gasto-icon">✈️</div>
-        <div class="gasto-info">
-          <div class="gasto-nombre">Pasaje Juani SMR → BOG</div>
-          <div class="gasto-quien">Pagó: Juani (no participaste)</div>
-          <div class="gasto-fecha">22 abril 2026</div>
-        </div>
-        <div class="gasto-monto">
-          <div class="gasto-cop" style="color:var(--col-muted)">—</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="deudas-title">Deudas por persona (estimado)</div>
-    <div id="deudas-list"></div>
-    <div style="font-size:11px;color:var(--col-muted);margin-top:12px;">* Los montos son aproximados basados en los gastos visibles en Splitwise. Sincronizar manualmente.</div>
-  </div>
-</section>
-
-<!-- VUELOS -->
-<section class="section" id="s-vuelos">
-  <div class="section-title">✈️ Vuelos del Grupo</div>
-  <div class="section-sub">Verificá el estado en tiempo real con los links</div>
-
-  <div class="nota-box">
-    ⚠️ <span>Los números de vuelo son de referencia. Confirmá con tu aerolínea o usá los links para ver estado en tiempo real.</span>
-  </div>
-
-  <div class="vuelo-item">
-    <div style="font-size:28px">✈️</div>
-    <div class="vuelo-route">
-      <div class="vuelo-cities"><span>AEP</span><span class="vuelo-arrow">→</span><span>BOG</span></div>
-      <div class="vuelo-info">29 de abril · AR 1360 · Sale 12:45 · Llega 17:30 · Colo confirmado</div>
-    </div>
-    <a class="vuelo-link" href="https://www.flightaware.com/live/findflight?origin=AEP&destination=BOG" target="_blank">Ver estado</a>
-  </div>
-
-  <div class="vuelo-item">
-    <div style="font-size:28px">✈️</div>
-    <div class="vuelo-route">
-      <div class="vuelo-cities"><span>BOG</span><span class="vuelo-arrow">→</span><span>CTG</span></div>
-      <div class="vuelo-info">29-30 abr · Conexión a Cartagena</div>
-    </div>
-    <a class="vuelo-link" href="https://www.flightaware.com/live/findflight?origin=BOG&destination=CTG" target="_blank">Ver estado</a>
-  </div>
-
-  <div class="vuelo-item">
-    <div style="font-size:28px">✈️</div>
-    <div class="vuelo-route">
-      <div class="vuelo-cities"><span>SMR</span><span class="vuelo-arrow">→</span><span>BOG</span></div>
-      <div class="vuelo-info">6 mayo · LATAM · Sale 15:25 · Llega 16:55 · Directo · 1h 30min</div>
-    </div>
-    <a class="vuelo-link" href="https://www.flightaware.com/live/findflight?origin=SMR&destination=BOG" target="_blank">Ver estado</a>
-  </div>
-
-  <div class="vuelo-item">
-    <div style="font-size:28px">✈️</div>
-    <div class="vuelo-route">
-      <div class="vuelo-cities"><span>BOG</span><span class="vuelo-arrow">→</span><span>AEP</span></div>
-      <div class="vuelo-info">9-10 mayo · AR 1361 · Sale 20:05 (sáb 9) · Llega 04:40 (dom 10) · Colo confirmado</div>
-    </div>
-    <a class="vuelo-link" href="https://www.flightaware.com/live/findflight?origin=BOG&destination=AEP" target="_blank">Ver estado</a>
-  </div>
-
-  <div class="card" style="margin-top:16px;">
-    <div class="card-title">Links útiles</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <a class="vuelo-link" href="https://www.flightradar24.com/" target="_blank">🛰️ Flightradar24</a>
-      <a class="vuelo-link" href="https://www.aerocivil.gov.co/" target="_blank">🇨🇴 Aerocivil Colombia</a>
-      <a class="vuelo-link" href="https://www.latamairlines.com/ar/es" target="_blank">LATAM</a>
-      <a class="vuelo-link" href="https://www.aereas.com.ar/" target="_blank">Aerolíneas AR</a>
-    </div>
-  </div>
-</section>
-
-<!-- EQUIPAJE -->
-<section class="section" id="s-equipaje">
-  <div class="section-title">🎒 Equipaje Grupal</div>
-  <div class="section-sub">Lista de cosas a llevar · by Oso Gonzalez Nuevo</div>
-
-  <div class="nota-box">
-    📌 <span>Tocá cada item para marcarlo como "traído". Se guarda en tu navegador.</span>
-  </div>
-
-  <div class="equip-grid" id="equip-grid"></div>
-</section>
-
-<!-- GALARDONES -->
-<section class="section" id="s-galardones">
-  <div class="section-title">🏆 Galardones Fin de Viaje</div>
-  <div class="section-sub">Votaciones · Los resultados se guardan en tu dispositivo</div>
-
-  <div class="nota-box">
-    🗳️ <span>Cada persona vota desde su celular. Los resultados son locales (no se sincronizan entre dispositivos). Para votación final, usen un solo celular.</span>
-  </div>
-
-  <div id="galardones-container"></div>
-</section>
-
-<script src="https://unpkg.com/globe.gl"></script>
 <script>
-// ===== DATA =====
-const INTEGRANTES = ['Fauno','Casty','Chapa','Duty','Franky','Gordo','Juani','Nono','Oso','Colo'];
-const EMOJIS_INT = ['🤠','🎸','🕶️','💪','📸','🌎','✈️','🎯','🐻','⭐'];
+const INTEGRANTES = ["Fauno","Casty","Chapa","Duty","Franky","Gordo","Juani","Nono","Oso","Colo"];
+const EMOJIS_INT  = ["🤠","🎸","🕶️","💪","📸","🌎","✈️","🎯","🐻","⭐"];
+const EMOJI_BY_NAME = Object.fromEntries(INTEGRANTES.map((n,i)=>[n, EMOJIS_INT[i]]));
 
 const GALARDONES = [
-  { id:'mvp', emoji:'🏅', nombre:'MVP', desc:'Most Valuable Player — el más imprescindible del viaje' },
+  { id:'mvp',         emoji:'🏅', nombre:'MVP',             desc:'Most Valuable Player — el más imprescindible del viaje' },
   { id:'colaborador', emoji:'🤝', nombre:'Más Colaborador', desc:'El que más participa, ayuda y contribuye al bienestar general' },
-  { id:'revelacion', emoji:'💡', nombre:'Revelación', desc:'Quien dio a conocer una faceta desconocida para BIEN' },
-  { id:'borrachin', emoji:'🍺', nombre:'Borrachín', desc:'Quien considerás que puede perder el control por el exceso de alcohol' },
-  { id:'boyscout', emoji:'⛺', nombre:'Boy Scout', desc:'Firme al pie del cañón para acompañar en todo evento' },
-  { id:'uruguayo', emoji:'🪴', nombre:'Uruguayo', desc:'No ayuda un carajo en los quehaceres domésticos' },
-  { id:'goat', emoji:'🐐', nombre:'GOAT Colombiano', desc:'The Greatest Of All Time — edición Colombia 2026' },
-  { id:'curry', emoji:'🏀', nombre:'Stephen Curry', desc:'Al mejor triple — precisión y range al máximo' },
+  { id:'revelacion',  emoji:'💡', nombre:'Revelación',      desc:'Quien dio a conocer una faceta desconocida para BIEN' },
+  { id:'borrachin',   emoji:'🍺', nombre:'Borrachín',       desc:'Quien considerás que puede perder el control por el exceso de alcohol' },
+  { id:'boyscout',    emoji:'⛺', nombre:'Boy Scout',       desc:'Firme al pie del cañón para acompañar en todo evento' },
+  { id:'uruguayo',    emoji:'🪴', nombre:'Uruguayo',        desc:'No ayuda un carajo en los quehaceres domésticos' },
+  { id:'goat',        emoji:'🐐', nombre:'GOAT Colombiano', desc:'The Greatest Of All Time — edición Colombia 2026' },
+  { id:'curry',       emoji:'🏀', nombre:'Stephen Curry',   desc:'Al mejor triple — precisión y range al máximo' },
 ];
 
-const EQUIPAJE = [
-  { id:'protector', nombre:'Protector solar', owner:'Grupal (no le prestemos a Franky por 10 días)' },
-  { id:'gopro', nombre:'Go Pro', owner:'Osela' },
-  { id:'paletas', nombre:'2 paletas de pickleball', owner:'Oso (de Brasil)' },
-  { id:'pelotas', nombre:'Pelotas para paletas', owner:'Grupal' },
-  { id:'cartas', nombre:'Cartas', owner:'Grupal' },
-  { id:'parlante', nombre:'Parlante', owner:'Grupal' },
-  { id:'heladera', nombre:'Heladera conservadora', owner:'Comprar allá' },
-  { id:'futbol', nombre:'Pelota de fútbol', owner:'Grupal' },
-  { id:'fernet', nombre:'Fernet (3 x pera)', owner:'Grupal' },
-];
+const $ = (id) => document.getElementById(id);
 
-const TIMELINE_DATA = [
-  { date:'2026-04-29', ciudad:'Llegada a Bogotá', badge:'bog', emoji:'✈️', events:['AR 1360 · AEP 12:45 → BOG 17:30', 'Pick up en El Dorado', 'Check-in · Descanso'] },
-  { date:'2026-04-30', ciudad:'Soft Landing en Bogotá', badge:'bog', emoji:'🏙️', events:['Llegada a El Dorado · Pick up por Duty', 'Caminata por Bogotá', 'Cena & Drinks en Attic & Keller', 'Opcional: Andres Carne de Res Chia'] },
-  { date:'2026-05-01', ciudad:'Cartagena', badge:'ctg', emoji:'🏛️', events:['Vuelo BOG → CTG', 'Traslado a la Ciudad Amurallada', 'Caminata por la ciudad', 'Cena en Celele (#48 World Best 50)', 'Drinks en Alqumico (#11 World Best 50 Bars)'] },
-  { date:'2026-05-02', ciudad:'Islas del Rosario', badge:'ctg', emoji:'⛵', events:['Salida en Yate desde Muelle La Bodeguita', 'Almuerzo en Aluna Beach Club', 'Tarde de barco por las islas', 'Cena & Drinks en Agua de León'] },
-  { date:'2026-05-03', ciudad:'Chillin Fénix', badge:'ctg', emoji:'🏖️', events:['Salida en barco a Fénix Beach', 'Chill out, drinks & música electrónica', 'Regreso a Cartagena', 'Cena en Juan del Mar'] },
-  { date:'2026-05-04', ciudad:'Cartagena → Santa Marta', badge:'smr', emoji:'🚐', events:['Traslado en Van', 'Pit Stop almuerzo en Barranquilla · Mini City Tour', 'Traslado a Playa Dormida', 'Chill out en la playa · Asado de bienvenida'] },
-  { date:'2026-05-05', ciudad:'Tayrona', badge:'smr', emoji:'🤿', events:['Salida desde Playa Dormida al muelle', 'Yate a Taganga para bucear', 'Regreso + masajes opcionales', 'Cena en Restaurante Playa Dormida'] },
-  { date:'2026-05-06', ciudad:'Vuelta a Bogotá', badge:'bog', emoji:'✈️', events:['LATAM SMR 15:25 → BOG 16:55', 'Mini City Tour: centro histórico', 'Almuerzo en el centro · Padel', 'Cena en Gamberro o El Chato (#54 World Best)'] },
-  { date:'2026-05-09', ciudad:'Chill Out Suesca', badge:'bog', emoji:'🥩', events:['Traslado temprano a Suesca', 'Asado de despedida: Cordero o Vacío a la cruz', 'Vuelta a Bogotá', 'Opcional: Andres Carne de Res Chia'] },
-  { date:'2026-05-10', ciudad:'Vuelta a Buenos Aires', badge:'bog', emoji:'🛬', events:['Traslado al Aeropuerto El Dorado', 'Vuelo BOG → EZE', '¡Fin del Colombianazo! 🇨🇴'] },
-];
-
-const DEUDAS = [
-  { nombre:'Colo', monto:1318632 },
-  { nombre:'Casty', monto:1318632 },
-  { nombre:'Chapa', monto:1318632 },
-  { nombre:'Duty', monto:1318632 },
-  { nombre:'Franky', monto:1318632 },
-  { nombre:'Gordo', monto:1318632 },
-  { nombre:'Juani', monto:0 },
-  { nombre:'Nono', monto:1318632 },
-  { nombre:'Oso', monto:1318632 },
-  { nombre:'Fauno', monto:1318632 },
-];
-
-// ===== UTILS =====
-function fmt(n) { return new Intl.NumberFormat('es-CO').format(Math.round(n)); }
-
-function ls(key, def) {
-  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; }
-  catch(e) { return def; }
-}
-function lsSet(key, val) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
-}
-
-// ===== NAVIGATION =====
-const SECTION_IDS = ['hero','mapa','timeline','clima','vuelos','equipaje','galardones'];
-
-function showSection(id) {
-  document.getElementById('s-'+id).scrollIntoView({ behavior: 'smooth' });
-  setActiveNav(id);
-}
-
-function setActiveNav(id) {
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const idx = SECTION_IDS.indexOf(id);
-  const btns = document.querySelectorAll('.nav-btn');
-  if(idx >= 0 && btns[idx]) btns[idx].classList.add('active');
-}
-
-// IntersectionObserver — actualiza nav y dispara lazy loads
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(!entry.isIntersecting) return;
-    const id = entry.target.id.replace('s-','');
-    setActiveNav(id);
-    if(id === 'mapa') setTimeout(initMap, 100);
-    if(id === 'clima') loadClima();
+function api(method, path, body) {
+  return fetch(path, {
+    method,
+    credentials: 'same-origin',
+    headers: body ? {'Content-Type':'application/json'} : {},
+    body: body ? JSON.stringify(body) : undefined,
+  }).then(async r => {
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error(data.error || `HTTP ${r.status}`), { status: r.status });
+    return data;
   });
-}, { threshold: 0.3 });
+}
 
-SECTION_IDS.forEach(id => {
-  const el = document.getElementById('s-'+id);
-  if(el) observer.observe(el);
+function fillNameSelect() {
+  const sel = $('login-name');
+  for (const n of INTEGRANTES) {
+    const opt = document.createElement('option');
+    opt.value = n;
+    opt.textContent = `${EMOJI_BY_NAME[n]} ${n}`;
+    sel.appendChild(opt);
+  }
+}
+
+async function bootstrap() {
+  fillNameSelect();
+  try {
+    const s = await api('GET', '/api/state');
+    showApp(s);
+  } catch (e) {
+    showLogin();
+  }
+}
+
+function showLogin() {
+  $('overlay').classList.remove('hide');
+  $('topbar').classList.add('hide');
+  $('progress').classList.add('hide');
+  $('main').classList.add('hide');
+  setTimeout(() => $('login-name').focus(), 50);
+}
+
+function showApp(state) {
+  $('overlay').classList.add('hide');
+  $('topbar').classList.remove('hide');
+  $('progress').classList.remove('hide');
+  $('main').classList.remove('hide');
+  $('me-pill').textContent = `${EMOJI_BY_NAME[state.me] || ''} ${state.me}`;
+  render(state);
+}
+
+function render(state) {
+  $('prg-count').textContent = state.totalVoters;
+  $('prg-total').textContent = state.expectedVoters;
+
+  const grid = $('galardones-grid');
+  grid.innerHTML = '';
+  for (const g of GALARDONES) {
+    const tally = state.tallies[g.id] || {};
+    const myVote = state.myVotes[g.id] || null;
+    const totalForAward = Object.values(tally).reduce((a,b) => a+b, 0);
+    const max = Math.max(0, ...Object.values(tally));
+    const leaders = Object.entries(tally).filter(([,c]) => c === max && c > 0).map(([n]) => n);
+    const hasClearLeader = leaders.length === 1 && max >= 2;
+
+    const card = document.createElement('section');
+    card.className = 'award';
+    card.innerHTML = `
+      <div class="award-head">
+        <div class="award-emoji">${g.emoji}</div>
+        <div class="award-title">
+          <h3>${g.nombre}</h3>
+          <p>${g.desc}</p>
+        </div>
+      </div>
+      <div class="chips">
+        ${INTEGRANTES.map(n => `
+          <button class="chip ${myVote === n ? 'selected' : ''}" data-name="${n}">
+            <span class="e">${EMOJI_BY_NAME[n]}</span>${n}
+          </button>
+        `).join('')}
+      </div>
+      <div class="tally">
+        ${INTEGRANTES.map(n => {
+          const c = tally[n] || 0;
+          const pct = state.expectedVoters ? (c / state.expectedVoters) * 100 : 0;
+          const isLeader = hasClearLeader && leaders[0] === n;
+          return `
+            <div class="tally-row">
+              <span class="tally-name ${isLeader?'is-leader':''}">${n}</span>
+              <div class="tally-track"><div class="tally-fill ${isLeader?'is-leader':''}" style="width:${pct}%"></div></div>
+              <span class="tally-count">${c}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      ${hasClearLeader && state.totalVoters >= state.expectedVoters
+        ? `<div class="winner-banner">🏆 Ganador: ${EMOJI_BY_NAME[leaders[0]]} ${leaders[0]}</div>`
+        : ''}
+    `;
+    card.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const target = btn.dataset.name;
+        const newTarget = (myVote === target) ? null : target;
+        try {
+          card.querySelectorAll('.chip').forEach(b => b.disabled = true);
+          const fresh = await api('POST', '/api/vote', { award: g.id, target: newTarget });
+          render(fresh);
+        } catch (e) {
+          if (e.status === 401) { showLogin(); return; }
+          alert('No se pudo guardar el voto: ' + e.message);
+          card.querySelectorAll('.chip').forEach(b => b.disabled = false);
+        }
+      });
+    });
+    grid.appendChild(card);
+  }
+}
+
+$('login-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const name = $('login-name').value;
+  const pin  = $('login-pin').value;
+  const err  = $('login-error');
+  err.textContent = '';
+  if (!INTEGRANTES.includes(name)) { err.textContent = 'Elegí un nombre.'; return; }
+  if (!/^\d{4}$/.test(pin)) { err.textContent = 'PIN inválido (4 dígitos).'; return; }
+  try {
+    const state = await api('POST', '/api/login', { name, pin });
+    $('login-pin').value = '';
+    showApp(state);
+  } catch (e) {
+    err.textContent = e.message === 'pin incorrecto' ? 'PIN incorrecto.' : 'Error: ' + e.message;
+  }
 });
 
-// ===== COUNTDOWN =====
-function updateCountdown() {
-  const target = new Date('2026-04-29T00:00:00-05:00');
-  const now = new Date();
-  const diff = target - now;
-  if(diff <= 0) {
-    document.getElementById('countdown').innerHTML = '<div style="font-size:24px;font-weight:900;color:var(--col-yellow)">🎉 ¡El viaje está en curso! 🇨🇴</div>';
-    return;
-  }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cd-d').textContent = d;
-  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
-  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
-  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
-}
+$('logout').addEventListener('click', async () => {
+  try { await api('POST', '/api/logout'); } catch {}
+  showLogin();
+});
 
-// ===== PROGRESS =====
-function updateProgress() {
-  const start = new Date('2026-04-30');
-  const end = new Date('2026-05-10');
-  const now = new Date();
-  const total = end - start;
-  const elapsed = now - start;
-  const pct = Math.max(0, Math.min(100, Math.round(elapsed / total * 100)));
-  document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('prog-pct').textContent = pct + '%';
-  if(pct === 0) document.getElementById('prog-label').textContent = '¡Faltan días para el viaje!';
-  else if(pct >= 100) document.getElementById('prog-label').textContent = '¡Viaje completado! 🎉';
-  else document.getElementById('prog-label').textContent = 'Progreso del viaje';
-}
-
-// ===== GLOBE =====
-let mapInit = false;
-function initMap() {
-  if(mapInit) return;
-  mapInit = true;
-
-  const cities = [
-    { name:'Buenos Aires', lat:-34.604, lng:-58.382, color:'#aaaaff', label:'Buenos Aires', dates:'Origen y destino · AR 1360/1361' },
-    { name:'Bogotá', lat:4.711, lng:-74.0721, color:'#FCD116', label:'Bogotá', dates:'29-30 abr · Soft Landing · Etapa 1' },
-    { name:'Cartagena', lat:10.391, lng:-75.479, color:'#CE1126', label:'Cartagena', dates:'1-3 may · Ciudad Amurallada · Etapa 2' },
-    { name:'Santa Marta', lat:11.241, lng:-74.199, color:'#6ca0ff', label:'Santa Marta', dates:'4-6 may · Playa Dormida · Etapa 3' },
-    { name:'Suesca / BOG', lat:5.100, lng:-73.800, color:'#f39c12', label:'Suesca / BOG', dates:'6-10 may · Asado despedida · Etapa 4' },
-  ];
-
-  const arcs = [
-    { slat:-34.604, slng:-58.382, elat:4.711, elng:-74.0721, col:'rgba(170,170,255,0.9)' },
-    { slat:4.711, slng:-74.0721, elat:10.391, elng:-75.479, col:'rgba(252,209,22,0.9)' },
-    { slat:10.391, slng:-75.479, elat:11.241, elng:-74.199, col:'rgba(252,209,22,0.9)' },
-    { slat:11.241, slng:-74.199, elat:5.100, elng:-73.800, col:'rgba(252,209,22,0.9)' },
-    { slat:5.100, slng:-73.800, elat:-34.604, elng:-58.382, col:'rgba(170,170,255,0.9)' },
-  ];
-
-  const el = document.getElementById('map');
-
-  const globe = Globe()
-    .width(el.clientWidth || el.offsetWidth || 800)
-    .height(el.clientHeight || el.offsetHeight || 500)
-    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
-    .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
-    .pointsData(cities)
-    .pointLat('lat').pointLng('lng')
-    .pointColor('color').pointAltitude(0.01).pointRadius(0.5)
-    .pointLabel(d => `<div style="font-family:Montserrat,sans-serif;background:rgba(10,10,30,0.92);border:1px solid ${d.color};border-radius:8px;padding:8px 12px;"><b style="color:${d.color}">${d.label}</b><br><span style="font-size:11px;color:#ccc">${d.dates}</span></div>`)
-    .labelsData(cities)
-    .labelLat('lat').labelLng('lng')
-    .labelText('name').labelColor(() => '#ffffff')
-    .labelSize(0.6).labelAltitude(0.02).labelDotRadius(0)
-    .arcsData(arcs)
-    .arcStartLat('slat').arcStartLng('slng')
-    .arcEndLat('elat').arcEndLng('elng')
-    .arcColor(d => [d.col.replace('0.9','0.1'), d.col, d.col.replace('0.9','0.1')])
-    .arcAltitude(0.2).arcStroke(0.5)
-    .arcDashLength(0.4).arcDashGap(0.2).arcDashAnimateTime(2500)
-    (el);
-
-  globe.pointOfView({ lat: -12, lng: -68, altitude: 2.8 });
-  globe.controls().autoRotate = true;
-  globe.controls().autoRotateSpeed = 0.6;
-  globe.controls().enableZoom = true;
-
-  window._globe = globe;
-
-  window.addEventListener('resize', () => {
-    globe.width(el.clientWidth).height(el.clientHeight);
-  });
-}
-
-// ===== TIMELINE =====
-const DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
-const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-function buildTimeline() {
-  const container = document.getElementById('timeline-container');
-  const today = new Date().toISOString().split('T')[0];
-  container.innerHTML = '';
-  TIMELINE_DATA.forEach(day => {
-    const isPast = day.date < today;
-    const isToday = day.date === today;
-    const d = new Date(day.date + 'T12:00:00');
-    const label = DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES[d.getMonth()];
-    const badgeClass = 'badge-'+day.badge;
-    const cityBadge = `<span class="tl-badge ${badgeClass}">${day.ciudad.includes('→') ? '🚐' : day.badge.toUpperCase()}</span>`;
-    container.innerHTML += `
-      <div class="tl-item ${isPast?'past':''} ${isToday?'today':''}">
-        <div class="tl-dot">${isPast?'✓':''}</div>
-        <div class="tl-date">${label} ${isToday?'· HOY 🔥':''}</div>
-        <div class="tl-city">${day.emoji} ${day.ciudad} ${cityBadge}</div>
-        <div class="tl-events">${day.events.join(' · ')}</div>
-      </div>`;
-  });
-}
-
-// ===== CLIMA =====
-let climaLoaded = false;
-
-const CLIMA_CITIES = [
-  { name:'Bogotá', lat:4.711, lon:-74.072, color:'#FCD116',
-    days:['2026-04-29','2026-04-30','2026-05-06','2026-05-07','2026-05-08','2026-05-09','2026-05-10'] },
-  { name:'Cartagena', lat:10.391, lon:-75.479, color:'#CE1126',
-    days:['2026-05-01','2026-05-02','2026-05-03'] },
-  { name:'Santa Marta', lat:11.241, lon:-74.199, color:'#6ca0ff',
-    days:['2026-05-04','2026-05-05','2026-05-06'] },
-];
-
-const TRIP_DATES = [];
-(function(){
-  let d = new Date('2026-04-29T12:00:00');
-  const end = new Date('2026-05-10T12:00:00');
-  while(d <= end) { TRIP_DATES.push(d.toISOString().split('T')[0]); d.setDate(d.getDate()+1); }
-})();
-
-function wmoEmoji(code) {
-  code = parseInt(code);
-  if(code === 0) return '☀️';
-  if(code <= 3) return '⛅';
-  if(code <= 48) return '🌫️';
-  if(code <= 67) return '🌧️';
-  if(code <= 82) return '🌦️';
-  if(code <= 99) return '⛈️';
-  return '🌤️';
-}
-
-function loadClima() {
-  if(climaLoaded) return;
-  climaLoaded = true;
-  const wrap = document.getElementById('clima-tl-wrap');
-  const today = new Date().toISOString().split('T')[0];
-
-  Promise.all(CLIMA_CITIES.map(c =>
-    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=16`)
-    .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
-  )).then(results => {
-    const weatherByCity = results.map((res, i) => {
-      const map = {};
-      (res.daily.time || []).forEach((date, j) => {
-        map[date] = {
-          max: Math.round(res.daily.temperature_2m_max[j]),
-          min: Math.round(res.daily.temperature_2m_min[j]),
-          icon: wmoEmoji(res.daily.weathercode[j])
-        };
-      });
-      return map;
-    });
-
-    const headRow = `<div class="clima-tl-row">
-      <div class="clima-tl-label"></div>
-      ${TRIP_DATES.map(d => {
-        const dd = new Date(d+'T12:00:00');
-        const isToday = d === today;
-        return `<div class="clima-tl-head-cell ${isToday?'today-col':''}">
-          ${DIAS[dd.getDay()]}<br>${dd.getDate()} ${MESES[dd.getMonth()]}
-        </div>`;
-      }).join('')}
-    </div>`;
-
-    const cityRows = CLIMA_CITIES.map((city, i) => {
-      const wmap = weatherByCity[i];
-      const cells = TRIP_DATES.map(d => {
-        const active = city.days.includes(d);
-        const isToday = d === today;
-        const w = wmap[d];
-        const inner = w
-          ? `<div class="ct-icon">${w.icon}</div><div class="ct-max">${w.max}°</div><div class="ct-min">${w.min}°</div>`
-          : `<div class="ct-loading">·</div>`;
-        return `<div class="clima-tl-cell ${active?'active':'inactive'} ${isToday?'today-col':''}">${active ? inner : ''}</div>`;
-      }).join('');
-      return `<div class="clima-tl-row">
-        <div class="clima-tl-label" style="color:${city.color}">${city.name}</div>
-        ${cells}
-      </div>`;
-    }).join('');
-
-    const legend = `<div class="clima-legend">
-      ${CLIMA_CITIES.map(c => `<div class="clima-legend-item">
-        <div class="clima-legend-dot" style="background:${c.color}"></div>${c.name}
-      </div>`).join('')}
-      <div class="clima-legend-item" style="margin-left:auto;font-size:10px;">via Open-Meteo · pronóstico 14 días</div>
-    </div>`;
-
-    wrap.innerHTML = `<div class="clima-tl-outer"><div class="clima-tl">${headRow}${cityRows}</div></div>${legend}`;
-  }).catch(err => {
-    console.error('Clima error:', err);
-    wrap.innerHTML = `<div class="clima-loading">⚠️ Error cargando pronóstico · ${err.message}</div>`;
-  });
-}
-
-// ===== GASTOS =====
-function buildDeudas() {
-  const max = Math.max(...DEUDAS.map(d => d.monto));
-  const container = document.getElementById('deudas-list');
-  container.innerHTML = DEUDAS.map(d => `
-    <div class="deuda-row">
-      <div class="deuda-nombre">${d.nombre}</div>
-      <div class="deuda-bar-wrap"><div class="deuda-bar" style="width:${max?d.monto/max*100:0}%"></div></div>
-      <div class="deuda-monto">${d.monto > 0 ? 'COP '+fmt(d.monto) : '✅ Sin deuda'}</div>
-    </div>`).join('');
-}
-
-// ===== EQUIPAJE =====
-function buildEquipaje() {
-  const state = ls('equip_state', {});
-  const container = document.getElementById('equip-grid');
-  container.innerHTML = EQUIPAJE.map(item => {
-    const done = !!state[item.id];
-    return `<div class="equip-item ${done?'done':''}" onclick="toggleEquip('${item.id}',this)">
-      <div class="equip-check">${done?'✓':''}</div>
-      <div>
-        <div class="equip-name">${item.nombre}</div>
-        <div class="equip-owner">${item.owner}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function toggleEquip(id, el) {
-  const state = ls('equip_state', {});
-  state[id] = !state[id];
-  lsSet('equip_state', state);
-  el.classList.toggle('done');
-  const check = el.querySelector('.equip-check');
-  check.textContent = state[id] ? '✓' : '';
-  el.querySelector('.equip-name').style.textDecoration = state[id] ? 'line-through' : '';
-  el.querySelector('.equip-name').style.opacity = state[id] ? '0.6' : '';
-}
-
-// ===== GALARDONES =====
-function buildGalardones() {
-  const container = document.getElementById('galardones-container');
-  container.innerHTML = '';
-  GALARDONES.forEach(g => {
-    const votes = ls('votes_'+g.id, {});
-    const userVote = ls('uservote_'+g.id, null);
-    const maxVotes = Math.max(1, ...INTEGRANTES.map(n => votes[n]||0));
-
-    let winnerName = null;
-    let winnerVotes = 0;
-    INTEGRANTES.forEach(n => {
-      if((votes[n]||0) > winnerVotes) { winnerVotes = votes[n]||0; winnerName = n; }
-    });
-
-    const votersHTML = INTEGRANTES.map((name, i) => {
-      const v = votes[name]||0;
-      const pct = Math.round(v / Math.max(1, Object.values(votes).reduce((a,b)=>a+b,0)) * 100);
-      const isSelected = userVote === name;
-      const isWinner = winnerVotes > 0 && name === winnerName;
-      return `<button class="voter-btn ${isSelected?'selected':''} ${isWinner?'winner':''}" onclick="vote('${g.id}','${name}',this)">
-        <div class="voter-name">${EMOJIS_INT[i]} ${name}</div>
-        <div class="voter-bar-wrap"><div class="voter-bar" style="width:${pct}%;background:${isWinner?'var(--col-green)':'var(--col-yellow)'}"></div></div>
-        <div class="voter-count">${v} voto${v!==1?'s':''} · ${pct}%</div>
-      </button>`;
-    }).join('');
-
-    const winnerBanner = winnerVotes > 0
-      ? `<div class="award-winner-banner" style="display:block">🏆 Ganando: ${winnerName} con ${winnerVotes} voto${winnerVotes!==1?'s':''}</div>`
-      : '';
-
-    container.innerHTML += `
-      <div class="award-card" id="award-${g.id}">
-        <div class="award-header">
-          <div class="award-emoji">${g.emoji}</div>
-          <div>
-            <div class="award-name">${g.nombre}</div>
-            <div class="award-desc">${g.desc}</div>
-          </div>
-        </div>
-        <div class="award-voters">${votersHTML}</div>
-        ${winnerBanner}
-      </div>`;
-  });
-}
-
-function vote(awardId, name, btn) {
-  const prev = ls('uservote_'+awardId, null);
-  const votes = ls('votes_'+awardId, {});
-
-  if(prev) { votes[prev] = Math.max(0, (votes[prev]||0) - 1); }
-  if(prev === name) {
-    lsSet('uservote_'+awardId, null);
-  } else {
-    votes[name] = (votes[name]||0) + 1;
-    lsSet('uservote_'+awardId, name);
-  }
-  lsSet('votes_'+awardId, votes);
-  buildGalardones();
-}
-
-// ===== GLOBE CONTROLS =====
-function toggleGlobeRotate() {
-  if(!window._globe) return;
-  const ctrl = window._globe.controls();
-  ctrl.autoRotate = !ctrl.autoRotate;
-  const btn = document.getElementById('globe-rotate-btn');
-  btn.textContent = ctrl.autoRotate ? '⏸ Pausar rotación' : '▶ Reanudar rotación';
-}
-
-// ===== INIT =====
-updateCountdown();
-setInterval(updateCountdown, 1000);
-buildTimeline();
-buildDeudas();
-buildEquipaje();
-buildGalardones();
+bootstrap();
 </script>
 </body>
 </html>
