@@ -126,6 +126,26 @@
     font-weight: 800;
     text-align: center;
   }
+  .vote-status {
+    background: var(--col-dark);
+    border: 1px dashed var(--col-accent);
+    color: var(--col-muted);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    text-align: center;
+  }
+  .vote-status strong { color: var(--col-yellow); font-weight: 800; }
+  .reveal-hint {
+    background: var(--col-card);
+    border-bottom: 1px solid var(--col-accent);
+    color: var(--col-muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 8px 16px;
+    line-height: 1.4;
+  }
+  .reveal-hint strong { color: var(--col-yellow); }
 
   .overlay {
     position: fixed; inset: 0;
@@ -205,6 +225,10 @@
   <span><strong id="prg-count">0</strong> de <strong id="prg-total">10</strong> ya votaron</span>
 </div>
 
+<div id="reveal-hint" class="reveal-hint hide">
+  Los <strong>resultados</strong> se publican al final del viaje. Solo ves tu propio voto.
+</div>
+
 <main id="main" class="hide">
   <div id="galardones-grid" class="galardones-grid"></div>
   <footer>Tu voto se guarda automáticamente. Podés cambiarlo cuando quieras.</footer>
@@ -265,6 +289,7 @@ function showLogin() {
   $('overlay').classList.remove('hide');
   $('topbar').classList.add('hide');
   $('progress').classList.add('hide');
+  $('reveal-hint').classList.add('hide');
   $('main').classList.add('hide');
   setTimeout(() => $('login-name').focus(), 50);
 }
@@ -281,16 +306,16 @@ function showApp(state) {
 function render(state) {
   $('prg-count').textContent = state.totalVoters;
   $('prg-total').textContent = state.expectedVoters;
+  $('reveal-hint').classList.toggle('hide', !!state.revealed);
 
   const grid = $('galardones-grid');
   grid.innerHTML = '';
   for (const g of GALARDONES) {
-    const tally = state.tallies[g.id] || {};
+    const tally = (state.revealed && state.tallies && state.tallies[g.id]) || {};
     const myVote = state.myVotes[g.id] || null;
-    const totalForAward = Object.values(tally).reduce((a,b) => a+b, 0);
     const max = Math.max(0, ...Object.values(tally));
     const leaders = Object.entries(tally).filter(([,c]) => c === max && c > 0).map(([n]) => n);
-    const hasClearLeader = leaders.length === 1 && max >= 2;
+    const hasClearLeader = state.revealed && leaders.length === 1 && max >= 2;
 
     const card = document.createElement('section');
     card.className = 'award';
@@ -309,20 +334,24 @@ function render(state) {
           </button>
         `).join('')}
       </div>
-      <div class="tally">
-        ${INTEGRANTES.map(n => {
-          const c = tally[n] || 0;
-          const pct = state.expectedVoters ? (c / state.expectedVoters) * 100 : 0;
-          const isLeader = hasClearLeader && leaders[0] === n;
-          return `
-            <div class="tally-row">
-              <span class="tally-name ${isLeader?'is-leader':''}">${n}</span>
-              <div class="tally-track"><div class="tally-fill ${isLeader?'is-leader':''}" style="width:${pct}%"></div></div>
-              <span class="tally-count">${c}</span>
-            </div>
-          `;
-        }).join('')}
-      </div>
+      ${state.revealed ? `
+        <div class="tally">
+          ${INTEGRANTES.map(n => {
+            const c = tally[n] || 0;
+            const pct = state.expectedVoters ? (c / state.expectedVoters) * 100 : 0;
+            const isLeader = hasClearLeader && leaders[0] === n;
+            return `
+              <div class="tally-row">
+                <span class="tally-name ${isLeader?'is-leader':''}">${n}</span>
+                <div class="tally-track"><div class="tally-fill ${isLeader?'is-leader':''}" style="width:${pct}%"></div></div>
+                <span class="tally-count">${c}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      ` : `
+        <div class="vote-status">${myVote ? `Tu voto: <strong>${EMOJI_BY_NAME[myVote]} ${myVote}</strong>` : 'Aún no votaste'}</div>
+      `}
       ${hasClearLeader && state.totalVoters >= state.expectedVoters
         ? `<div class="winner-banner">🏆 Ganador: ${EMOJI_BY_NAME[leaders[0]]} ${leaders[0]}</div>`
         : ''}
