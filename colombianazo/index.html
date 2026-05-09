@@ -190,8 +190,56 @@
   .login-card .submit:disabled { opacity: 0.5; cursor: not-allowed; }
   .login-error { color: var(--col-red); font-size: 12px; font-weight: 700; text-align: center; min-height: 16px; }
 
+  .submit-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    background: rgba(10,10,30,0.97);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid var(--col-yellow);
+    padding: 10px 16px 14px;
+    display: flex; flex-direction: column; gap: 8px; align-items: stretch;
+  }
+  .submit-status {
+    font-size: 12px;
+    color: var(--col-muted);
+    text-align: center;
+  }
+  .submit-status strong { color: var(--col-yellow); font-weight: 800; }
+  .submit-btn {
+    background: var(--col-yellow);
+    color: var(--col-dark);
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px; font-weight: 900;
+    width: 100%;
+  }
+  .submit-btn:active { transform: scale(0.98); }
+
+  .done-card {
+    background: var(--col-card);
+    border: 2px solid var(--col-yellow);
+    border-radius: 18px;
+    padding: 32px 22px;
+    width: 100%; max-width: 360px;
+    display: flex; flex-direction: column; gap: 16px; align-items: center;
+    text-align: center;
+  }
+  .done-icon { font-size: 56px; line-height: 1; }
+  .done-card h2 { font-size: 22px; font-weight: 900; color: var(--col-yellow); }
+  .done-card p { font-size: 13px; color: var(--col-muted); line-height: 1.5; }
+  .done-card .submit {
+    background: var(--col-yellow);
+    color: var(--col-dark);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px; font-weight: 900;
+    margin-top: 4px;
+  }
+
   .hide { display: none !important; }
   footer { text-align: center; color: var(--col-muted); font-size: 11px; padding: 24px 16px; }
+  body.has-submit-bar { padding-bottom: 96px; }
 </style>
 </head>
 <body>
@@ -233,6 +281,20 @@
   <div id="galardones-grid" class="galardones-grid"></div>
   <footer>Tu voto se guarda automáticamente. Podés cambiarlo cuando quieras.</footer>
 </main>
+
+<div id="submit-bar" class="submit-bar hide">
+  <span class="submit-status">Votaste <strong id="my-vote-count">0</strong> de <strong>8</strong> galardones</span>
+  <button id="submit-btn" class="submit-btn" type="button">Listo, enviar mis votos</button>
+</div>
+
+<div id="done-overlay" class="overlay hide">
+  <div class="done-card">
+    <div class="done-icon">✅</div>
+    <h2>¡Listo!</h2>
+    <p>Tus votos quedaron registrados.<br>Podés volver a entrar para cambiarlos.</p>
+    <button id="back-to-login" class="submit" type="button">Volver a entrar</button>
+  </div>
+</div>
 
 <script>
 const INTEGRANTES = ["Fauno","Casty","Chapa","Duty","Franky","Gordo","Juani","Nono","Oso","Colo"];
@@ -287,26 +349,44 @@ async function bootstrap() {
 
 function showLogin() {
   $('overlay').classList.remove('hide');
+  $('done-overlay').classList.add('hide');
   $('topbar').classList.add('hide');
   $('progress').classList.add('hide');
   $('reveal-hint').classList.add('hide');
   $('main').classList.add('hide');
+  $('submit-bar').classList.add('hide');
+  document.body.classList.remove('has-submit-bar');
   setTimeout(() => $('login-name').focus(), 50);
 }
 
 function showApp(state) {
   $('overlay').classList.add('hide');
+  $('done-overlay').classList.add('hide');
   $('topbar').classList.remove('hide');
   $('progress').classList.remove('hide');
   $('main').classList.remove('hide');
+  $('submit-bar').classList.remove('hide');
+  document.body.classList.add('has-submit-bar');
   $('me-pill').textContent = `${EMOJI_BY_NAME[state.me] || ''} ${state.me}`;
   render(state);
+}
+
+function showDone() {
+  $('overlay').classList.add('hide');
+  $('topbar').classList.add('hide');
+  $('progress').classList.add('hide');
+  $('reveal-hint').classList.add('hide');
+  $('main').classList.add('hide');
+  $('submit-bar').classList.add('hide');
+  document.body.classList.remove('has-submit-bar');
+  $('done-overlay').classList.remove('hide');
 }
 
 function render(state) {
   $('prg-count').textContent = state.totalVoters;
   $('prg-total').textContent = state.expectedVoters;
   $('reveal-hint').classList.toggle('hide', !!state.revealed);
+  $('my-vote-count').textContent = Object.keys(state.myVotes || {}).length;
 
   const grid = $('galardones-grid');
   grid.innerHTML = '';
@@ -394,6 +474,17 @@ $('login-form').addEventListener('submit', async (ev) => {
 
 $('logout').addEventListener('click', async () => {
   try { await api('POST', '/api/logout'); } catch {}
+  showLogin();
+});
+
+$('submit-btn').addEventListener('click', async () => {
+  $('submit-btn').disabled = true;
+  try { await api('POST', '/api/logout'); } catch {}
+  showDone();
+});
+
+$('back-to-login').addEventListener('click', () => {
+  $('submit-btn').disabled = false;
   showLogin();
 });
 
