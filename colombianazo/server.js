@@ -129,5 +129,28 @@ app.post("/api/vote", async (req, res) => {
   res.json(publicState(name));
 });
 
+function adminAuthorized(req) {
+  const expected = process.env.ADMIN_TOKEN;
+  if (!expected) return false;
+  const got = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+  if (got.length !== expected.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(got), Buffer.from(expected));
+}
+
+app.post("/api/admin/wipe-votes", async (req, res) => {
+  if (!adminAuthorized(req)) return res.status(401).json({ error: "no admin" });
+  state.votes = {};
+  await saveState();
+  res.json({ ok: true, votes: state.votes });
+});
+
+app.post("/api/admin/reveal", async (req, res) => {
+  if (!adminAuthorized(req)) return res.status(401).json({ error: "no admin" });
+  const { revealed } = req.body || {};
+  state.revealed = !!revealed;
+  await saveState();
+  res.json({ ok: true, revealed: state.revealed });
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => console.log(`colombianazo listening on ${port}`));
