@@ -363,11 +363,20 @@ function showApp(state) {
   $('overlay').classList.add('hide');
   $('done-overlay').classList.add('hide');
   $('topbar').classList.remove('hide');
-  $('progress').classList.remove('hide');
   $('main').classList.remove('hide');
-  $('submit-bar').classList.remove('hide');
-  document.body.classList.add('has-submit-bar');
-  $('me-pill').textContent = `${EMOJI_BY_NAME[state.me] || ''} ${state.me}`;
+
+  const isAnon = !state.me;
+  const canVote = !!state.me && !state.revealed;
+
+  $('me-pill').classList.toggle('hide', isAnon);
+  $('logout').classList.toggle('hide', isAnon);
+  $('progress').classList.toggle('hide', state.revealed || isAnon);
+  $('submit-bar').classList.toggle('hide', !canVote);
+  document.body.classList.toggle('has-submit-bar', canVote);
+
+  if (state.me) {
+    $('me-pill').textContent = `${EMOJI_BY_NAME[state.me] || ''} ${state.me}`;
+  }
   render(state);
 }
 
@@ -388,6 +397,7 @@ function render(state) {
   $('reveal-hint').classList.toggle('hide', !!state.revealed);
   $('my-vote-count').textContent = Object.keys(state.myVotes || {}).length;
 
+  const canVote = !!state.me && !state.revealed;
   const grid = $('galardones-grid');
   grid.innerHTML = '';
   for (const g of GALARDONES) {
@@ -407,13 +417,15 @@ function render(state) {
           <p>${g.desc}</p>
         </div>
       </div>
-      <div class="chips">
-        ${INTEGRANTES.map(n => `
-          <button class="chip ${myVote === n ? 'selected' : ''}" data-name="${n}">
-            <span class="e">${EMOJI_BY_NAME[n]}</span>${n}
-          </button>
-        `).join('')}
-      </div>
+      ${canVote ? `
+        <div class="chips">
+          ${INTEGRANTES.map(n => `
+            <button class="chip ${myVote === n ? 'selected' : ''}" data-name="${n}">
+              <span class="e">${EMOJI_BY_NAME[n]}</span>${n}
+            </button>
+          `).join('')}
+        </div>
+      ` : ''}
       ${state.revealed ? `
         <div class="tally">
           ${INTEGRANTES.map(n => {
@@ -429,28 +441,30 @@ function render(state) {
             `;
           }).join('')}
         </div>
-      ` : `
+      ` : (state.me ? `
         <div class="vote-status">${myVote ? `Tu voto: <strong>${EMOJI_BY_NAME[myVote]} ${myVote}</strong>` : 'Aún no votaste'}</div>
-      `}
-      ${hasClearLeader && state.totalVoters >= state.expectedVoters
+      ` : '')}
+      ${hasClearLeader
         ? `<div class="winner-banner">🏆 Ganador: ${EMOJI_BY_NAME[leaders[0]]} ${leaders[0]}</div>`
         : ''}
     `;
-    card.querySelectorAll('.chip').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const target = btn.dataset.name;
-        const newTarget = (myVote === target) ? null : target;
-        try {
-          card.querySelectorAll('.chip').forEach(b => b.disabled = true);
-          const fresh = await api('POST', '/api/vote', { award: g.id, target: newTarget });
-          render(fresh);
-        } catch (e) {
-          if (e.status === 401) { showLogin(); return; }
-          alert('No se pudo guardar el voto: ' + e.message);
-          card.querySelectorAll('.chip').forEach(b => b.disabled = false);
-        }
+    if (canVote) {
+      card.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const target = btn.dataset.name;
+          const newTarget = (myVote === target) ? null : target;
+          try {
+            card.querySelectorAll('.chip').forEach(b => b.disabled = true);
+            const fresh = await api('POST', '/api/vote', { award: g.id, target: newTarget });
+            render(fresh);
+          } catch (e) {
+            if (e.status === 401) { showLogin(); return; }
+            alert('No se pudo guardar el voto: ' + e.message);
+            card.querySelectorAll('.chip').forEach(b => b.disabled = false);
+          }
+        });
       });
-    });
+    }
     grid.appendChild(card);
   }
 }

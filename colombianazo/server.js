@@ -112,13 +112,14 @@ app.post("/api/logout", async (req, res) => {
 
 app.get("/api/state", (req, res) => {
   const name = getUser(req);
-  if (!name) return res.status(401).json({ error: "no auth" });
+  if (!name && !state.revealed) return res.status(401).json({ error: "no auth" });
   res.json(publicState(name));
 });
 
 app.post("/api/vote", async (req, res) => {
   const name = getUser(req);
   if (!name) return res.status(401).json({ error: "no auth" });
+  if (state.revealed) return res.status(423).json({ error: "votación cerrada" });
   const { award, target } = req.body || {};
   if (!GALARDONES.includes(award)) return res.status(400).json({ error: "galardon invalido" });
   if (target !== null && !INTEGRANTES.includes(target)) return res.status(400).json({ error: "target invalido" });
