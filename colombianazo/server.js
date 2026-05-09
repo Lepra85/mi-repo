@@ -144,6 +144,24 @@ app.post("/api/admin/wipe-votes", async (req, res) => {
   res.json({ ok: true, votes: state.votes });
 });
 
+app.get("/api/admin/voters", (req, res) => {
+  if (!adminAuthorized(req)) return res.status(401).json({ error: "no admin" });
+  const byVoter = {};
+  for (const name of Object.keys(state.votes)) {
+    const count = Object.keys(state.votes[name]).length;
+    if (count > 0) byVoter[name] = count;
+  }
+  const voted = Object.keys(byVoter);
+  const missing = INTEGRANTES.filter(n => !voted.includes(n));
+  res.json({
+    expected: INTEGRANTES.length,
+    totalCategories: GALARDONES.length,
+    voters: byVoter,
+    voted,
+    missing,
+  });
+});
+
 app.post("/api/admin/reveal", async (req, res) => {
   if (!adminAuthorized(req)) return res.status(401).json({ error: "no admin" });
   const { revealed } = req.body || {};
